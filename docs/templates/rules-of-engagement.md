@@ -8,7 +8,7 @@
 |---|---|
 | Cliente | Contoso Lda. (fictício) |
 | Executante | João Mendonça |
-| Data de início | AAAA-MM-DD |
+| Data de início | 2026-09-16 |
 | Data de fim | AAAA-MM-DD |
 | Tipo de teste | Grey-box (conhecimento parcial) |
 
@@ -43,4 +43,4 @@
 
 Declaro que possuo autorização plena para testar os sistemas listados no âmbito, por serem propriedade minha e estarem isolados num laboratório.
 
-Assinatura: __________________  Data: __________
+Assinatura: João Mendonça  Data: 2026-09-16

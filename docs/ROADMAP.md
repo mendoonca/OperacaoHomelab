@@ -3,10 +3,10 @@
 Acompanha o progresso do projeto. Marca à medida que avanças.
 
 ## Fase 0 — Planeamento
-- [ ] Rules of Engagement preenchidas
-- [ ] Topologia desenhada no Packet Tracer
-- [ ] VLANs + ACLs configuradas e testadas
-- [ ] `.pkt` e screenshots guardados
+- [X] Rules of Engagement preenchidas
+- [X] Topologia desenhada no Packet Tracer
+- [X] VLANs + ACLs configuradas e testadas
+- [X] `.pkt` e screenshots guardados
 
 ## Fase 1 — Construção
 - [ ] Redes internas criadas no VirtualBox
