@@ -1,0 +1,19 @@
+# Alvos web vulneráveis para o lab (correr no Ubuntu Server da DMZ)
+# Uso:  docker compose -f docker-compose-alvos.yml up -d
+#
+# ⚠️  APENAS para ambiente isolado. Nunca expor à internet real.
+
+services:
+  dvwa:
+    image: vulnerables/web-dvwa
+    container_name: dvwa
+    ports:
+      - "8080:80"
+    restart: unless-stopped
+
+  juiceshop:
+    image: bkimminich/juice-shop
+    container_name: juiceshop
+    ports:
+      - "3000:3000"
+    restart: unless-stopped

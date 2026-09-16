@@ -1,0 +1,21 @@
+# Evidências grandes / sensíveis — descomenta se não quiseres versionar screenshots
+# evidencias/**/*.png
+# evidencias/**/*.jpg
+
+# Credenciais e segredos — NUNCA versionar
+*.env
+secrets/
+credentials.txt
+*.key
+*.pem
+
+# Ficheiros de VM (demasiado grandes para o git)
+*.vdi
+*.vmdk
+*.ova
+*.iso
+
+# Sistema
+.DS_Store
+Thumbs.db
+*.tmp
