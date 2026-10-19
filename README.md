@@ -99,7 +99,7 @@ Todo o trabalho aqui documentado foi realizado **num ambiente isolado, contra m�
 
 Projeto desenvolvido por **João Mendonça** como portfólio para funções em cibersegurança (pentesting / blue team).
 
-📫 jpmendonca505@gmail.com
+📫 contacto@joaomendonca.dev
 
 ## 📄 Licença
 
