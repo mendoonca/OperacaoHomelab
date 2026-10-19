@@ -56,4 +56,37 @@
 
 ---
 
+### 2026-10-19 — [Fase 1] Construção do laboratório em VMs
+
+**O que fiz:**
+- Montei o laboratório completo no VirtualBox (host com 16 GB de RAM), com três redes: WAN (NAT), LAN (`192.168.10.0/24`) e DMZ (`192.168.20.0/24`).
+- **pfSense (firewall):** instalei o pfSense CE 2.9.0 com três interfaces — WAN (em0), LAN (em1, `192.168.10.1`) e OPT1/DMZ (em2, `192.168.20.1`). Configurei DHCP na LAN e na DMZ, corri o Setup Wizard pelo browser e criei as regras de firewall da DMZ.
+- **Kali (atacante):** importei a imagem pré-feita para a rede `lan`; recebeu IP por DHCP (`192.168.10.100`) e confirmei ligação ao gateway.
+- **Ubuntu Server 26.04 (alvo web):** instalei na rede `dmz` com IP estático `192.168.20.10`, instalei o Docker e subi os alvos vulneráveis **DVWA** (porta 8080) e **OWASP Juice Shop** (porta 3000) via docker-compose.
+
+**O que correu mal / o que aprendi:**
+- **VT-x desativado:** a primeira VM não arrancava (`VT-x is disabled in the BIOS`). Tive de ativar a virtualização por hardware no BIOS/UEFI. Aprendi a confirmar o estado em Gestor de Tarefas → Desempenho → CPU → Virtualização.
+- **Conectividade da DMZ e Apply Changes:** o maior problema desta fase foi o servidor da DMZ não chegar a lado nenhum (100% packet loss, nem ao gateway). O lado do Ubuntu estava correto (IP, rota default). O problema era na pfSense: as regras de firewall da interface OPT1 **não tinham sido aplicadas** (faltava carregar em "Apply Changes"). Percebi que a pfSense bloqueia todo o tráfego de uma interface nova até existirem regras **ativas**. Depois de aplicar, a conectividade passou a 0% loss.
+- **Ordem das regras de firewall:** aprendi, na prática, que as regras são avaliadas de cima para baixo — a regra de *Block* (DMZ→LAN) tem de estar **acima** da de *Pass* (DMZ→Any), senão o "permitir tudo" apanha o tráfego primeiro.
+- Escolhi o **Ubuntu Server** em vez do Desktop para poupar RAM (sem interface gráfica), decisão importante com apenas 16 GB.
+
+**Decisões tomadas (e porquê):**
+- WAN em NAT para a firewall ter internet (updates); Kali na LAN como "insider"; servidor web isolado na DMZ.
+- Regra de firewall a **bloquear DMZ→LAN** e **DMZ→rede de gestão**, permitindo apenas DMZ→Internet — princípio de que um servidor exposto e comprometido não deve conseguir alcançar a rede interna.
+- Alvos em **Docker** por ser a forma mais limpa e reprodutível de os correr e destruir.
+
+**Como validei:**
+- `ping` do servidor da DMZ ao gateway (`192.168.20.1`) e à internet (`8.8.8.8`, `google.com`) — todos com 0% loss após aplicar as regras.
+- `docker ps` com os dois containers (dvwa, juiceshop) em estado *Up*.
+- A partir do **Kali (LAN)**, acesso via browser ao **DVWA** (`http://192.168.20.10:8080`) e ao **Juice Shop** (`http://192.168.20.10:3000`), provando a cadeia Kali → firewall → DMZ.
+
+**Evidências guardadas:**
+- Screenshots: estado das 3 interfaces da pfSense, regras de firewall OPT1, `docker ps`, testes de ping (antes/depois do Apply Changes), DVWA e Juice Shop abertos no Kali.
+- Snapshots das VMs em estado limpo: pfSense, Kali, Ubuntu-WebServer.
+
+**Próximo passo:**
+- Fase 2 — Reconhecimento e Enumeração (nmap, whatweb, gobuster, nikto) a partir do Kali contra o alvo `192.168.20.10`.
+
+---
+
 *(continua a acrescentar entradas por baixo)*
